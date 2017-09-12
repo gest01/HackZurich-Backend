@@ -8,4 +8,4 @@ Doku mit Azure
 https://docs.microsoft.com/de-de/azure/app-service/app-service-deploy-spring-boot-web-app-on-azure
 
 Erreichbar unter:
-http://hackzurich-backend.azurewebsites.net/
+http://hackzurich-api.azurewebsites.net/
