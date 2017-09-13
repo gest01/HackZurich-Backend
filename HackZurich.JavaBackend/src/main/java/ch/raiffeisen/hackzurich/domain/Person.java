@@ -1,16 +1,36 @@
 package ch.raiffeisen.hackzurich.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * Created by simon on 12.09.2017.
  */
+@Entity
 public class Person {
 
+    private Long id;
     private String vorname;
-    private String name;
+    private String nachname;
 
-    public Person(String vorname, String name) {
+    public Person(){
+
+    }
+
+    public Person(String vorname, String nachname) {
         this.vorname = vorname;
-        this.name = name;
+        this.nachname = nachname;
+    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getVorname() {
@@ -21,11 +41,11 @@ public class Person {
         this.vorname = vorname;
     }
 
-    public String getName() {
-        return name;
+    public String getNachname() {
+        return nachname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNachname(String nachname) {
+        this.nachname = nachname;
     }
 }

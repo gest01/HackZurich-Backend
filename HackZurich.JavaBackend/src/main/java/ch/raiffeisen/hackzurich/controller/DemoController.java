@@ -1,15 +1,12 @@
 package ch.raiffeisen.hackzurich.controller;
 
 import ch.raiffeisen.hackzurich.domain.Person;
-import ch.raiffeisen.hackzurich.repository.PersonRepository;
+import ch.raiffeisen.hackzurich.repositories.PersonRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by simon on 20.06.2017.
@@ -24,7 +21,7 @@ public class DemoController {
 
     @RequestMapping(path = "/", method= RequestMethod.GET)
     public Iterable<Person> listPersonen() {
-        return personRepository.listPerson();
+        return personRepository.findAll();
     }
 
 
