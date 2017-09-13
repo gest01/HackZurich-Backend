@@ -28,20 +28,5 @@ public class DemoController {
     }
 
 
-    @RequestMapping("/userhome")
-    public String userhome() {
-        return System.getProperty("user.dir");
-    }
-
-    @RequestMapping("/files")
-    public List<String> files() {
-        List<String> result = new ArrayList<>();
-        File file  = new File(System.getProperty("user.dir"));
-        File[] files = file.listFiles();
-        for (File file1 : files) {
-            result.add(file1.getAbsolutePath());
-        }
-        return result;
-    }
 
 }

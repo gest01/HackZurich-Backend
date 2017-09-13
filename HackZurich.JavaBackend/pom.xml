@@ -39,6 +39,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>6.2.1.jre8</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -53,6 +58,26 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>4.0</version>
+				<configuration>
+					<url>jdbc:sqlserver://hackzurich.database.windows.net:1433;databaseName=hackzurich</url>
+					<user>hackadmin</user>
+					<password>manuell setzen und nicht einchecken</password>
+				</configuration>
+				<!--
+				<dependencies>
+					<dependency>
+						<groupId>org.hibernate</groupId>
+						<artifactId>hibernate-entitymanager</artifactId>
+						<version>5.1.0.Final</version>
+					</dependency>
+				</dependencies>
+				-->
+			</plugin>
+
 		</plugins>
 	</build>
 
