@@ -3,6 +3,8 @@ package ch.raiffeisen.hackzurich.controller;
 import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodRepository;
 import ch.raiffeisen.hackzurich.repositories.PersonRepository;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -33,7 +35,8 @@ public class CleanfoodController {
     }
 
     @RequestMapping(value="/{id}", method= RequestMethod.GET, produces="application/json")
-    public byte[] getImage(@PathVariable("id") Long id) {
-        return cleanFoodRepository.findOne(id).getImageData();
+    public ResponseEntity<byte[]> getImage(@PathVariable("id") Long id) {
+        byte [] image = cleanFoodRepository.findOne(id).getImageData();
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
     }
 }
