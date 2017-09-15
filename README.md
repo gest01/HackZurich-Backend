@@ -9,3 +9,13 @@ https://docs.microsoft.com/de-de/azure/app-service/app-service-deploy-spring-boo
 
 Erreichbar unter:
 http://hackzurich-api.azurewebsites.net/
+
+
+Image zur Analyse hochladen
+http://hackzurich-api.azurewebsites.net/api/cleanfood/image/uploadAndAnalyze
+Post Request, multipart, file param enthält image binary daten
+
+
+Image holen
+http://hackzurich-api.azurewebsites.net/api/cleanfood/image/1
+
