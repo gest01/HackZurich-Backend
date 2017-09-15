@@ -13,7 +13,9 @@ http://hackzurich-api.azurewebsites.net/
 
 Image zur Analyse hochladen
 http://hackzurich-api.azurewebsites.net/api/cleanfood/image/uploadAndAnalyze
+
 Post Request, multipart, file param enthält image binary daten
+
 
 
 Image holen
