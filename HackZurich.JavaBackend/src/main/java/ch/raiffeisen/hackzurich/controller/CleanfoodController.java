@@ -33,7 +33,7 @@ public class CleanfoodController {
     }
 
     @RequestMapping(value="/{id}", method= RequestMethod.GET, produces="application/json")
-    public CleanFoodImage getImage(@PathVariable("id") Long id) {
-        return cleanFoodRepository.findOne(id);
+    public byte[] getImage(@PathVariable("id") Long id) {
+        return cleanFoodRepository.findOne(id).getImageData();
     }
 }
