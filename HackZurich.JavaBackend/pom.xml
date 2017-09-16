@@ -48,12 +48,24 @@
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>
 			<version>1.22.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava-jdk5</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.google.apis</groupId>
 			<artifactId>google-api-services-vision</artifactId>
-		<version>v1-rev360-1.22.0</version>
-	</dependency>
+			<version>v1-rev360-1.22.0</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>com.google.guava</artifactId>
+					<groupId>guava</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>com.fatsecret4j</groupId>
 			<artifactId>fatsecret-platform</artifactId>
@@ -65,20 +77,58 @@
 			<version>2.3.1</version>
 		</dependency>
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>2.6.1</version>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-language</artifactId>
+			<version>0.23.1-beta</version>
 		</dependency>
 		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>2.6.1</version>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>23.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.rapidapi.utils</groupId>
+			<artifactId>rapidApi</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aylien.textapi</groupId>
+			<artifactId>client</artifactId>
+			<version>0.6.0</version>
 		</dependency>
 
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<configuration>
+					<groupId>com.rapidapi.utils</groupId>
+					<artifactId>rapidApi</artifactId>
+					<version>1.0</version>
+					<packaging>jar</packaging>
+					<file>${basedir}/src/main/webapp/WEB-INF/rapid-api.jar</file>
+					<generatePom>true</generatePom>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install-jar-lib</id>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<phase>validate</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

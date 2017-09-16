@@ -50,17 +50,35 @@ public class GoogleVisionClient {
                 .build();
     }
 
-
-
     public List<EntityAnnotation> labelImage(byte [] data) throws IOException {
-        // [START construct_request]
+        AnnotateImageResponse response = callGoogleVisionAPI(data, "LABEL_DETECTION");
+        if (response.getLabelAnnotations() == null) {
+            throw new IOException(
+                    response.getError() != null
+                            ? response.getError().getMessage()
+                            : "Unknown error getting image annotations");
+        }
+        return response.getLabelAnnotations();
+    }
 
+    public List<EntityAnnotation> detectText(byte [] data) throws IOException {
+        AnnotateImageResponse response = callGoogleVisionAPI(data, "TEXT_DETECTION");
+        if (response.getTextAnnotations() == null) {
+            throw new IOException(
+                    response.getError() != null
+                            ? response.getError().getMessage()
+                            : "Unknown error getting image annotations");
+        }
+        return response.getTextAnnotations();
+    }
+
+    private AnnotateImageResponse callGoogleVisionAPI(byte[] data, String detectionType) throws IOException {
         AnnotateImageRequest request =
                 new AnnotateImageRequest()
                         .setImage(new Image().encodeContent(data))
                         .setFeatures(ImmutableList.of(
                                 new Feature()
-                                        .setType("LABEL_DETECTION")
+                                        .setType(detectionType)
                                         .setMaxResults(MAX_LABELS)));
         Vision.Images.Annotate annotate = vision.images().annotate(new BatchAnnotateImagesRequest().setRequests(ImmutableList.of(request)));
         // Due to a bug: requests to Vision API containing large images fail when GZipped.
@@ -71,15 +89,7 @@ public class GoogleVisionClient {
         BatchAnnotateImagesResponse batchResponse = annotate.execute();
         assert batchResponse.getResponses().size() == 1;
         AnnotateImageResponse response = batchResponse.getResponses().get(0);
-        if (response.getLabelAnnotations() == null) {
-            throw new IOException(
-                    response.getError() != null
-                            ? response.getError().getMessage()
-                            : "Unknown error getting image annotations");
-        }
-        return response.getLabelAnnotations();
-        // [END parse_response]
+
+        return response;
     }
-
-
 }

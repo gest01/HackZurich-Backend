@@ -1,10 +1,6 @@
 package ch.raiffeisen.hackzurich.controller;
 
-import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
-import ch.raiffeisen.hackzurich.domain.ImageFood;
-import ch.raiffeisen.hackzurich.dto.ImageDetail;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodImageRepository;
-import ch.raiffeisen.hackzurich.repositories.ImageFoodRepository;
 import ch.raiffeisen.hackzurich.service.CleanfoodService;
 import ch.raiffeisen.hackzurich.service.firebase.FirebaseService;
 import ch.raiffeisen.hackzurich.service.google.GoogleVisionClient;
@@ -19,8 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/cleanfood/image")
@@ -29,9 +23,6 @@ public class CleanfoodController {
 
     @Resource
     private CleanFoodImageRepository cleanFoodRepository;
-
-    @Resource
-    private ImageFoodRepository imageFoodRepository;
 
     @Resource
     private CleanfoodService cleanfoodService;
@@ -79,21 +70,12 @@ public class CleanfoodController {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body("Ok");
     }
 
-    @RequestMapping(value="/details/{id}", method= RequestMethod.GET, produces="application/json")
-    public List<ImageDetail> getImageFoodDetails(@PathVariable("id") Long id) {
-        CleanFoodImage image = cleanFoodRepository.findOne(id);
-        Iterable<ImageFood> all = imageFoodRepository.findByCleanFoodImage(image);
+    @RequestMapping(value="/detectText/{entryId}/{imageId}", method= RequestMethod.POST, produces="text/plain")
+    public ResponseEntity<String> detectText(@PathVariable(value="entryId") String entryId,
+                                             @PathVariable(value="imageId") Long imageId) throws Exception {
 
-        return getImagesDetails(image, all);
-    }
+        cleanfoodService.detectText(imageId, entryId);
 
-    private List<ImageDetail> getImagesDetails(CleanFoodImage image, Iterable<ImageFood> foods) {
-        List<ImageDetail> details = new ArrayList<>();
-        for (ImageFood food : foods) {
-            details.add(ImageDetail.from(image, food));
-        }
-        return details;
-
-
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body("Ok");
     }
 }

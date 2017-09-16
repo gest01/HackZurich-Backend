@@ -1,16 +1,12 @@
 package ch.raiffeisen.hackzurich.service;
 
 import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
-import ch.raiffeisen.hackzurich.domain.ImageFood;
 import ch.raiffeisen.hackzurich.dto.FoodFacts;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodImageRepository;
-import ch.raiffeisen.hackzurich.repositories.ImageFoodRepository;
 import ch.raiffeisen.hackzurich.service.fatsecret.FoodService;
-import ch.raiffeisen.hackzurich.service.fatsecret.HealthCalculator;
-import ch.raiffeisen.hackzurich.service.fatsecret.HealthInformation;
 import ch.raiffeisen.hackzurich.service.firebase.FirebaseService;
+import ch.raiffeisen.hackzurich.service.google.GoogleLanguageClient;
 import ch.raiffeisen.hackzurich.service.google.GoogleVisionClient;
-import com.fatsecret.platform.model.*;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +15,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -31,19 +25,16 @@ public class CleanfoodService {
     private CleanFoodImageRepository cleanFoodRepository;
 
     @Resource
-    private ImageFoodRepository imageFoodRepository;
+    private GoogleVisionClient googleVisionClient;
 
     @Resource
-    private GoogleVisionClient googleVisionClient;
+    private GoogleLanguageClient googleLanguageClient;
 
     @Resource
     private FirebaseService firebaseService;
 
     @Resource
     private FoodService foodService;
-
-    @Resource
-    private HealthCalculator healthCalculator;
 
 
     public Long saveImage(byte [] imagedata, byte [] thumbnaildata ) {
@@ -61,56 +52,46 @@ public class CleanfoodService {
     public void analyze(Long imageId, String entryId) throws IOException {
         CleanFoodImage cleanFoodImage = cleanFoodRepository.findOne(imageId);
         List<EntityAnnotation> googleLabelData = getGoogleLabelData(cleanFoodImage.getImageData());
-        HealthInformation healthInformation = null;
-        List<CompactRecipe> recipes = new ArrayList<>();
-        List<Food> foodDetailList = new ArrayList<>();
-        for (EntityAnnotation googleLabel : googleLabelData) {
-            List<CompactFood> foodFacts = foodService.getFoodFacts(googleLabel.getDescription());
-            if(foodFacts.size()>0) {
-                List<Food> foodDetails = foodService.getFoodDetails(foodFacts);
-                foodDetailList.addAll(foodDetails);
-                healthInformation = healthCalculator.calculateHealth(foodDetails);
-                for (Food foodDetail : foodDetails) {
-                    ImageFood imageFood = new ImageFood();
-                    Serving serving = foodDetail.getServings().get(0);
-                    imageFood.setCalories(serving.getCalories());
-                    imageFood.setCleanFoodImage(cleanFoodImage);
-                    imageFood.setFat(serving.getFat());
-                    imageFood.setHealthScore(new BigDecimal(healthInformation.getHealthScore()));
-                    imageFood.setSugar(serving.getSugar());
-                    imageFood.setUrl(serving.getServingUrl());
-                    imageFood.setLabel(googleLabel.getDescription());
-                    imageFoodRepository.save(imageFood);
-                }
-                break;
-            }
-            List<CompactRecipe> recipesCompact = foodService.getRecipes(googleLabel.getDescription());
-            recipes.addAll(recipesCompact);
-            //recipeDetails.addAll(foodService.getRecipeDetails(recipesCompact));
-
-        }
-        createFirebaseEntry(entryId, googleLabelData, healthInformation, recipes, foodDetailList);
+        createFirebaseEntry(entryId, googleLabelData);
     }
 
+    @Async
+    public void detectText(Long imageId, String entryId) throws IOException {
+        CleanFoodImage cleanFoodImage = cleanFoodRepository.findOne(imageId);
+        List<EntityAnnotation> googleTextData = getGoogleTextData(cleanFoodImage.getImageData());
+        createFirebaseEntry(entryId, googleTextData);
+    }
 
     private List<EntityAnnotation> getGoogleLabelData(byte [] imagedata) throws IOException {
         String google_application_credentials = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
         logger.info("GOOGLE_APPLICATION_CREDENTIALS: "+google_application_credentials);
 
-        logger.info("Call google vision api start");
+        logger.info("Call google vision api with label data detection start");
         List<EntityAnnotation> entityAnnotations = googleVisionClient.labelImage(imagedata);
         logger.info("Call google vision api finish with hits: "+(entityAnnotations!=null ? entityAnnotations.size() : 0));
         return entityAnnotations;
 
     }
 
-    private void createFirebaseEntry(String entryId, List<EntityAnnotation> googleLabelData, HealthInformation healthInformation, List<CompactRecipe> recipes, List<Food> foodDetailList) {
+    private List<EntityAnnotation> getGoogleTextData(byte [] imagedata) throws IOException {
+        String google_application_credentials = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
+        logger.info("GOOGLE_APPLICATION_CREDENTIALS: "+google_application_credentials);
+
+        logger.info("Call google vision api with text detection start");
+        List<EntityAnnotation> entityAnnotations = googleVisionClient.detectText(imagedata);
+        logger.info("Call google vision api finish with hits: "+(entityAnnotations!=null ? entityAnnotations.size() : 0));
+
+
+//        googleLanguageClient.determineCategory();
+
+        return entityAnnotations;
+
+    }
+
+    private void createFirebaseEntry(String entryId, List<EntityAnnotation> googleLabelData) {
         FoodFacts foodFacts = new FoodFacts();
         foodFacts.setGoogle(googleLabelData);
-        foodFacts.setHealthscore(healthInformation.getHealthScore().intValue());
-        foodFacts.setHealthInformation(healthInformation);
-        foodFacts.setRecipes(recipes);
-        foodFacts.setFoodDetails(foodDetailList);
+        foodFacts.setHealthscore(90);
         logger.info("Start firebase create entry");
         String key = entryId != null ? entryId : "";
         firebaseService.setFoodFacts(entryId, foodFacts);

@@ -8,8 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by simon on 16.09.2017.
  */
@@ -27,8 +25,5 @@ public class GoogleVisionClientTest {
             System.out.println(entityAnnotation);
             System.out.println(entityAnnotation.getProperties());
         }
-
-
     }
-
 }

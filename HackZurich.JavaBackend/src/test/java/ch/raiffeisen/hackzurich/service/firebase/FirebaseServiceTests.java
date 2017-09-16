@@ -1,10 +1,13 @@
 package ch.raiffeisen.hackzurich.service.firebase;
 
+import ch.raiffeisen.hackzurich.dto.Entry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -26,7 +29,7 @@ public class FirebaseServiceTests {
 //	public void getAllEntries() throws Exception {
 //		Map<String, Entry> entries = firebaseService.getAllEntries();
 //
-//		for (HashMap.Entry<String, Entry> entry : entries.entrySet()) {
+//		for (Map.Entry<String, Entry> entry : entries.entrySet()) {
 //			System.out.println("Entry : " + entry.getKey() + " by User : " + entry.getValue().getUser().getDisplayName());
 //		}
 //	}
