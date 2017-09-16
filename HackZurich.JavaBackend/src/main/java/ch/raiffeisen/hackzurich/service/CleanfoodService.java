@@ -1,10 +1,8 @@
 package ch.raiffeisen.hackzurich.service;
 
-import ch.raiffeisen.hackzurich.controller.CleanfoodController;
 import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
-import ch.raiffeisen.hackzurich.dto.Entry;
 import ch.raiffeisen.hackzurich.dto.FoodFacts;
-import ch.raiffeisen.hackzurich.repositories.CleanFoodRepository;
+import ch.raiffeisen.hackzurich.repositories.CleanFoodImageRepository;
 import ch.raiffeisen.hackzurich.service.firebase.FirebaseService;
 import ch.raiffeisen.hackzurich.service.google.GoogleVisionClient;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
@@ -21,7 +19,7 @@ public class CleanfoodService {
     private final Logger logger = LoggerFactory.getLogger(CleanfoodService.class);
 
     @Resource
-    private CleanFoodRepository cleanFoodRepository;
+    private CleanFoodImageRepository cleanFoodRepository;
 
     @Resource
     private GoogleVisionClient googleVisionClient;
@@ -40,8 +38,13 @@ public class CleanfoodService {
         return image.getId();
     }
 
+    public void analyze(Long imageId, String entryId) throws IOException {
+        CleanFoodImage cleanFoodImage = cleanFoodRepository.findOne(imageId);
+        List<EntityAnnotation> googleLabelData = getGoogleLabelData(cleanFoodImage.getImageData());
 
-    public List<EntityAnnotation> getGoogleLabelData(byte [] imagedata) throws IOException {
+    }
+
+    private List<EntityAnnotation> getGoogleLabelData(byte [] imagedata) throws IOException {
         String google_application_credentials = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
         logger.info("GOOGLE_APPLICATION_CREDENTIALS: "+google_application_credentials);
 
@@ -52,12 +55,12 @@ public class CleanfoodService {
 
     }
 
-    public void createFirebaseEntry(List<EntityAnnotation> googleLabelData) {
+    private void createFirebaseEntry(String entryKey, List<EntityAnnotation> googleLabelData) {
         FoodFacts foodFacts = new FoodFacts();
         foodFacts.setGoogle(googleLabelData);
         foodFacts.setHealthscore(90);
-
         logger.info("Start firebase create entry");
+        String key = entryKey != null ? entryKey : "";
         firebaseService.setFoodFacts("", foodFacts);
         logger.info("Finish firebase create entry");
     }
