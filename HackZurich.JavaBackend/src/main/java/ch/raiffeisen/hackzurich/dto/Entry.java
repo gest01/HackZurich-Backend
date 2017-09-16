@@ -2,6 +2,8 @@ package ch.raiffeisen.hackzurich.dto;
 
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 
+import java.util.List;
+
 /**
  * Representation of a Firebase entry.
  *
@@ -10,7 +12,7 @@ import com.google.api.services.vision.v1.model.EntityAnnotation;
 public class Entry {
     private String imageUrl;
     private Integer healthscore;
-    private EntityAnnotation google;
+    List<EntityAnnotation> google;
     private Object nutrition;
     private String user;
 
@@ -28,5 +30,13 @@ public class Entry {
 
     public void setHealthscore(Integer healthscore) {
         this.healthscore = healthscore;
+    }
+
+    public List<EntityAnnotation> getGoogle() {
+        return google;
+    }
+
+    public void setGoogle(List<EntityAnnotation> google) {
+        this.google = google;
     }
 }

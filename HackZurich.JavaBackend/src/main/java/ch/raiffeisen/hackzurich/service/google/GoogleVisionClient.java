@@ -8,6 +8,7 @@ import com.google.api.services.vision.v1.Vision;
 import com.google.api.services.vision.v1.VisionScopes;
 import com.google.api.services.vision.v1.model.*;
 import com.google.common.collect.ImmutableList;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,9 +19,7 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by simon on 16.09.2017.
- */
+@Component
 public class GoogleVisionClient {
     /**
      * Be sure to specify the name of your application. If the application name is {@code null} or
