@@ -59,7 +59,7 @@ public class HealthCalculator {
         BigDecimal overallSum = fatSum.add(sugarSum).add(caloriesSum);
         BigDecimal overall = divide(overallSum, new BigDecimal(3));
         BigDecimal overallWithFactor = overall.multiply(MAGIC_FACTOR);
-        BigDecimal healthScore = new BigDecimal(100).subtract(overallWithFactor);
+        BigDecimal healthScore = new BigDecimal(90).subtract(overallWithFactor);
         healthScore =  healthScore.intValue() < 0 ? BigDecimal.ZERO : healthScore;
         return new HealthInformation(sugarSum.longValue(), fatSum.longValue(), caloriesSum.longValue(), healthScore.longValue());
     }

@@ -16,10 +16,11 @@ import java.util.List;
 public class FoodFacts {
     private Integer healthscore;
     private List<EntityAnnotation> google;
-    private Object nutritionFacts;
+    private NutritionFacts nutritionFacts;
     private List<Food> foodDetails;
     private HealthInformation healthInformation;
     private List<CompactRecipe> recipes;
+    private Sports sports;
 
     public Integer getHealthscore() {
         return healthscore;
@@ -59,5 +60,21 @@ public class FoodFacts {
 
     public void setFoodDetails(List<Food> foodDetails) {
         this.foodDetails = foodDetails;
+    }
+
+    public Sports getSports() {
+        return sports;
+    }
+
+    public void setSports(Sports sports) {
+        this.sports = sports;
+    }
+
+    public NutritionFacts getNutritionFacts() {
+        return nutritionFacts;
+    }
+
+    public void setNutritionFacts(NutritionFacts nutritionFacts) {
+        this.nutritionFacts = nutritionFacts;
     }
 }

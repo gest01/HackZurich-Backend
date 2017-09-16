@@ -3,6 +3,7 @@ package ch.raiffeisen.hackzurich.service;
 import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
 import ch.raiffeisen.hackzurich.domain.ImageFood;
 import ch.raiffeisen.hackzurich.dto.FoodFacts;
+import ch.raiffeisen.hackzurich.dto.Sports;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodImageRepository;
 import ch.raiffeisen.hackzurich.repositories.ImageFoodRepository;
 import ch.raiffeisen.hackzurich.service.fatsecret.FoodService;
@@ -65,6 +66,8 @@ public class CleanfoodService {
         List<CompactRecipe> recipes = new ArrayList<>();
         List<Food> foodDetailList = new ArrayList<>();
         for (EntityAnnotation googleLabel : googleLabelData) {
+            List<CompactRecipe> recipesCompact = foodService.getRecipes(googleLabel.getDescription());
+            recipes.addAll(recipesCompact);
             List<CompactFood> foodFacts = foodService.getFoodFacts(googleLabel.getDescription());
             if(foodFacts.size()>0) {
                 List<Food> foodDetails = foodService.getFoodDetails(foodFacts);
@@ -84,10 +87,6 @@ public class CleanfoodService {
                 }
                 break;
             }
-            List<CompactRecipe> recipesCompact = foodService.getRecipes(googleLabel.getDescription());
-            recipes.addAll(recipesCompact);
-            //recipeDetails.addAll(foodService.getRecipeDetails(recipesCompact));
-
         }
         createFirebaseEntry(entryId, googleLabelData, healthInformation, recipes, foodDetailList);
     }
@@ -111,6 +110,7 @@ public class CleanfoodService {
         foodFacts.setHealthInformation(healthInformation);
         foodFacts.setRecipes(recipes);
         foodFacts.setFoodDetails(foodDetailList);
+        foodFacts.setSports(new Sports(healthInformation.getCalories()));
         logger.info("Start firebase create entry");
         String key = entryId != null ? entryId : "";
         firebaseService.setFoodFacts(entryId, foodFacts);
