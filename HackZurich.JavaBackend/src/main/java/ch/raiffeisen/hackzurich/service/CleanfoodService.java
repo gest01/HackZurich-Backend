@@ -3,6 +3,7 @@ package ch.raiffeisen.hackzurich.service;
 import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
 import ch.raiffeisen.hackzurich.dto.FoodFacts;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodImageRepository;
+import ch.raiffeisen.hackzurich.service.fatsecret.FoodService;
 import ch.raiffeisen.hackzurich.service.firebase.FirebaseService;
 import ch.raiffeisen.hackzurich.service.google.GoogleVisionClient;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
@@ -28,11 +29,15 @@ public class CleanfoodService {
     @Resource
     private FirebaseService firebaseService;
 
+    @Resource
+    private FoodService foodService;
 
-    public Long saveImage(byte [] imagedata ) {
+
+    public Long saveImage(byte [] imagedata, byte [] thumbnaildata ) {
         logger.info("Uploading image with size:" +imagedata.length);
         CleanFoodImage image = new CleanFoodImage();
         image.setImageData(imagedata);
+        image.setThumbnailData(thumbnaildata);
         logger.info("Save image to the database");
         cleanFoodRepository.save(image);
         logger.info("Image DB ID: "+image.getId());
@@ -43,7 +48,7 @@ public class CleanfoodService {
     public void analyze(Long imageId, String entryId) throws IOException {
         CleanFoodImage cleanFoodImage = cleanFoodRepository.findOne(imageId);
         List<EntityAnnotation> googleLabelData = getGoogleLabelData(cleanFoodImage.getImageData());
-        createFirebaseEntry(entryId, googleLabelData);
+        //createFirebaseEntry(entryId, googleLabelData);
     }
 
     private List<EntityAnnotation> getGoogleLabelData(byte [] imagedata) throws IOException {

@@ -11,6 +11,7 @@ public class CleanFoodImage {
 
     private Long id;
     private byte[] imageData;
+    private byte[] thumbnailData;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +30,14 @@ public class CleanFoodImage {
 
     public void setImageData(byte[] imageData) {
         this.imageData = imageData;
+    }
+
+    public byte[] getThumbnailData() {
+        return thumbnailData;
+    }
+
+    @Lob
+    public void setThumbnailData(byte[] thumbnailData) {
+        this.thumbnailData = thumbnailData;
     }
 }

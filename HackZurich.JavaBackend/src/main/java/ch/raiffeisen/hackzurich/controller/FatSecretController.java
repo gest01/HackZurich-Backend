@@ -1,6 +1,7 @@
 package ch.raiffeisen.hackzurich.controller;
 
 import ch.raiffeisen.hackzurich.service.fatsecret.FoodService;
+import ch.raiffeisen.hackzurich.service.fatsecret.HealthCalculator;
 import com.fatsecret.platform.model.CompactFood;
 import com.fatsecret.platform.model.Food;
 import org.springframework.http.MediaType;
@@ -21,12 +22,23 @@ import java.util.List;
 @RequestMapping("/api/fatsecret")
 public class FatSecretController {
 
-@Resource
-private FoodService foodService;
+    @Resource
+    private FoodService foodService;
+
+    @Resource
+    private HealthCalculator healthCalculator;
 
     @RequestMapping(value="/searchFoods/{food}", method= RequestMethod.GET, produces="application/json")
     public List<Food> getFatSecret(@PathVariable("food") String food) {
         List<CompactFood> foodFacts = foodService.getFoodFacts(food);
-        return foodService.getFoodDetails(foodFacts);
+        List<Food> foodDetails = foodService.getFoodDetails(foodFacts);
+        Long aLong = healthCalculator.calculateHealth(foodDetails);
+        System.out.println("HEALTH VALUE: "+aLong);
+        return foodDetails;
+    }
+
+    @RequestMapping(value="/searchCompactFoods/{food}", method= RequestMethod.GET, produces="application/json")
+    public List<CompactFood> getFatSecretCompact(@PathVariable("food") String food) {
+         return foodService.getFoodFacts(food);
     }
 }

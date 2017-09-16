@@ -14,8 +14,8 @@ public class FoodService {
 
     private static final String API_KEY = "b3422a1cd0824284942a6c2dde064c97";
     private static final String API_REST_SECRET = "26e7d65017924a72987cf7c0a4b08af8";
-    private static final int MAX_SEARCH_DETAIL = 3;
-
+    private static final int MAX_SEARCH_DETAIL = 1;
+    private static final String FOOD_TYPE = "Generic";
     private FatsecretService fatsecretService;
 
 
@@ -24,14 +24,17 @@ public class FoodService {
     }
 
     public List<CompactFood> getFoodFacts(String food) {
-        String query = "pasta"; //Your query string
+        String query = food; //Your query string
         Response<CompactFood> response = fatsecretService.searchFoods(query);
         List<CompactFood> result = new ArrayList<>();
         int counter = 0;
         for (CompactFood compactFood : response.getResults()) {
-            result.add(compactFood);
-            if(counter>MAX_SEARCH_DETAIL) {
-                break;
+            if(FOOD_TYPE.equals(compactFood.getType())) {
+                counter++;
+                result.add(compactFood);
+                if (counter > MAX_SEARCH_DETAIL) {
+                    break;
+                }
             }
         }
         return result;
