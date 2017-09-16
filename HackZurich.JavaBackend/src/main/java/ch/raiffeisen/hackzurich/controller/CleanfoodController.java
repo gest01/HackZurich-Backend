@@ -2,6 +2,7 @@ package ch.raiffeisen.hackzurich.controller;
 
 import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
 import ch.raiffeisen.hackzurich.dto.Entry;
+import ch.raiffeisen.hackzurich.dto.FoodFacts;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodRepository;
 import ch.raiffeisen.hackzurich.repositories.PersonRepository;
 import ch.raiffeisen.hackzurich.service.firebase.FirebaseService;
@@ -53,14 +54,13 @@ public class CleanfoodController {
             logger.info("Call google vision api start");
             List<EntityAnnotation> entityAnnotations = googleVisionClient.labelImage(file.getBytes());
             logger.info("Call google vision api finish with hits: "+(entityAnnotations!=null ? entityAnnotations.size() : 0));
-            Entry e = new Entry();
-            e.setGoogle(entityAnnotations);
-            e.setHealthscore(90);
-            e.setImageUrl("blub");
 
-            logger.info("Start firebase create entry");
-            firebaseService.createEntry(e);
-            logger.info("Finish firebase create entry");
+            FoodFacts foodFacts = new FoodFacts();
+            foodFacts.setGoogle(entityAnnotations);
+            foodFacts.setHealthscore(90);
+
+            firebaseService.setFoodFacts("", foodFacts);
+
             return image.getId();
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,6 +73,4 @@ public class CleanfoodController {
         byte [] image = cleanFoodRepository.findOne(id).getImageData();
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
     }
-
-
 }

@@ -11,10 +11,9 @@ import java.util.List;
  */
 public class Entry {
     private String imageUrl;
-    private Integer healthscore;
-    List<EntityAnnotation> google;
-    private Object nutrition;
-    private String user;
+    FoodFacts foodFacts;
+    private Object nutritionFacts;
+    private User user;
 
     public String getImageUrl() {
         return imageUrl;
@@ -24,19 +23,19 @@ public class Entry {
         this.imageUrl = imageUrl;
     }
 
-    public Integer getHealthscore() {
-        return healthscore;
+    public FoodFacts getFoodFacts() {
+        return foodFacts;
     }
 
-    public void setHealthscore(Integer healthscore) {
-        this.healthscore = healthscore;
+    public void setFoodFacts(FoodFacts foodFacts) {
+        this.foodFacts = foodFacts;
     }
 
-    public List<EntityAnnotation> getGoogle() {
-        return google;
+    public User getUser() {
+        return user;
     }
 
-    public void setGoogle(List<EntityAnnotation> google) {
-        this.google = google;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
