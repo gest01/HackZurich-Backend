@@ -44,6 +44,16 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<version>6.2.1.jre8</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.22.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-vision</artifactId>
+		<version>v1-rev360-1.22.0</version>
+	</dependency>
 	</dependencies>
 
 	<build>
@@ -59,17 +69,8 @@
 				<configuration>
 					<url>jdbc:sqlserver://hackzurich.database.windows.net:1433;databaseName=hackzurich</url>
 					<user>hackadmin</user>
-					<password>manuell setzen und nicht einchecken</password>
+					<password>manuelle eingabe</password>
 				</configuration>
-				<!--
-				<dependencies>
-					<dependency>
-						<groupId>org.hibernate</groupId>
-						<artifactId>hibernate-entitymanager</artifactId>
-						<version>5.1.0.Final</version>
-					</dependency>
-				</dependencies>
-				-->
 			</plugin>
 
 		</plugins>

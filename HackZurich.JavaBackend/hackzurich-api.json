@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "hackzurich-api",
+  "private_key_id": "81701391c6d5517f640424e52122026037ff505c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDF1EMux61xmcbf\naVyryFm4Z4NimCioR+SuT5IbkH+RrGqnLPxyPPaf2Jw+h3Py4mO+ndg0V4e0OJEd\n+PEXsv43L9vPHtvsikt3/Sg1o1hLMgxPEdnuv37NaeUmaO77oAyfjP0x2Yz3Oppi\ng2DGna3BYVAIRft+XPKqoSPlj5h2noMkJRpsmPuVa3xttjB3kevYGAnNJ572uwU4\nTQv99BZDKHi4+gL6+8uRcTN8oWNkkGc1DatCL85TvH/a+9nD6srFasy8DuKkdE2N\nXkYXQkKei/Vvb7i4wytgCpVdztgNsPzJmmAKJ3XLM3YBLML7b7pzdu75yovxNLkn\nVXvov9FnAgMBAAECggEARUYH5Iitdps3paH6fnjg2g79VfgcPJk4PcXFTvuxgCxV\nCIdbOxGX9u9d/xNlica20NfrDqEb9wLb5hf3LKpUFLUgjo2qy1C+Dp1KiEXTtDkp\nUELbApxx5bJQOLwD+37XDMPNIbihgS03RInmyIYMgyv1X4BKCby4iQF2VXuMEvTf\nFUafG4B1ghdjUPVT6m8Wj4FeGoB49YbeslnNiqphC8uozl/c5w6GoeXrOFEp4Fu1\n8ORoesi9qv0EpxgaTeQWUg4IICRVbPzTBcEFPb1vu97wrMu3rsf5AFXDMt3KmztX\nh0UGH85Z5g7vSRnIu1lHQJxl9YPYyOvnAJNLhSgPOQKBgQDpnsDz86wDF5JIqsgJ\nQCpk5MgV2X+sujBzrnQRACtZfSJI6EcTHUveZ+ktlNqpXBP1n8VnWPUaA7w1eaBW\n79FhvxqzW7HoMZS+hBrj6jMX3kfRpW3GQo6D4ZY/tCCtr2DYZ+u/P/v/2XcyygSq\n3TrJkftWi9z2NKbKDdIVlccaLQKBgQDYx8dnmyS2g4cP56VbH8Q84ngD+NkRhtkI\nD0e4EPXz2DuRlwTvf62FNrAz4mUsLZ14hq0gTTXsxZdeeDHgIWOZ1o29lvlKFPdd\nHxrEgBc88RLcf9UezEhmvvTNgcdFQIpdFm8yBVIBT/nkGygHdjttMft+hy9/Wcdl\nJkV/pCy6YwKBgQCn4w91AQL3geP9VsXEaBlPQl5L3W70OSWCrLb6VK3SdKvDyzDw\nmpggL3qR6Cwvk11Aod3iBDq3xEFoCIzijRtibEyK4nV6kM79DsCoU3D+UR45mfHG\njaQPQHmSNCdbyfIF8sCnQxsc5THVDPrHs46AtujxbDeRs4q9H6t/GZDozQKBgGtB\nBMac+uAWWTekS6q3H9dj0S9d6sACMNUNAlXuhlHcFTTmPDnmuMplEW7KP3ZJJ1Uf\nhP6rVNfNtyO1Yi/bNTVC8yPvU220y+JV5l98ZILxX3ya/q3bMqMrLWGUKSx5TzvZ\nQrDD8xvVHvUd/oMamzJefWjPp89hcwb3lYEekEazAoGACjxAUF1iwkIuVnlxqzjC\nxQUU1Xbk8kPUFtD8GJarpqlnkY82kqo0+ya+z96psYHAY6Pn5OT2FNgI2kjI7bUm\nWeylP6xcvDc5l8xaf7O+KIlgJj3OuV6wyWz2fOKTlVe1xwQZziXnHtjW6aWquZWO\naSEXECEzGYaKFQml4I5onuE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "hackzurich-api@appspot.gserviceaccount.com",
+  "client_id": "111514523598897426920",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/hackzurich-api%40appspot.gserviceaccount.com"
+}
