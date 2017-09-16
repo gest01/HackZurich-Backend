@@ -39,6 +39,7 @@ public class Sports {
         text.add("Swimming in minutes: "+schwimmenInMinuten);
         text.add("Cycling in kilometers: "+radfahrenInKM);
         text.add("Cycling in minutes: "+radfahrenInMinuten);
+        text.add("Fishing in minutes: "+angelnAnzahlFische);
         text.add("Fishes count: "+angelnAnzahlFische);
     }
 
