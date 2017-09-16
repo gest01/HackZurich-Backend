@@ -59,7 +59,7 @@
 				<configuration>
 					<url>jdbc:sqlserver://hackzurich.database.windows.net:1433;databaseName=hackzurich</url>
 					<user>hackadmin</user>
-					<password>manuell setzen und nicht einchecken</password>
+					<password>073c0236acb10aa6e7c4de6b4b72e99eee20153fb693ad61b6739ACA1f2ab1fd</password>
 				</configuration>
 				<!--
 				<dependencies>
