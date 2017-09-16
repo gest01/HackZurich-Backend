@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * Created by simon on 12.09.2017.
  */
 @Repository
-public interface CleanFoodRepository extends CrudRepository<CleanFoodImage, Long> {
+public interface CleanFoodImageRepository extends CrudRepository<CleanFoodImage, Long> {
 
 
 }
