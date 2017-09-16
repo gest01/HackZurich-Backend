@@ -33,9 +33,7 @@ public class FoodService {
             if(counter>MAX_SEARCH_DETAIL) {
                 break;
             }
-
         }
-
         return result;
     }
 

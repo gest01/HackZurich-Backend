@@ -4,6 +4,7 @@ import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
 import ch.raiffeisen.hackzurich.dto.Entry;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodRepository;
 import ch.raiffeisen.hackzurich.repositories.PersonRepository;
+import ch.raiffeisen.hackzurich.service.CleanfoodService;
 import ch.raiffeisen.hackzurich.service.firebase.FirebaseService;
 import ch.raiffeisen.hackzurich.service.google.GoogleVisionClient;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
@@ -29,6 +30,8 @@ public class CleanfoodController {
     @Resource
     private CleanFoodRepository cleanFoodRepository;
 
+    @Resource
+    private CleanfoodService cleanfoodService;
 
     @Resource
     private GoogleVisionClient googleVisionClient;
@@ -40,28 +43,10 @@ public class CleanfoodController {
     @PostMapping("/uploadAndAnalyze")
     public Long handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         try {
-            logger.info("Uploading image with size:" +file.getBytes().length);
-            CleanFoodImage image = new CleanFoodImage();
-            image.setImageData(file.getBytes());
-            logger.info("Save image to the database");
-            cleanFoodRepository.save(image);
-            logger.info("Image DB ID: "+image.getId());
-
-            String google_application_credentials = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
-            logger.info("GOOGLE_APPLICATION_CREDENTIALS: "+google_application_credentials);
-
-            logger.info("Call google vision api start");
-            List<EntityAnnotation> entityAnnotations = googleVisionClient.labelImage(file.getBytes());
-            logger.info("Call google vision api finish with hits: "+(entityAnnotations!=null ? entityAnnotations.size() : 0));
-            Entry e = new Entry();
-            e.setGoogle(entityAnnotations);
-            e.setHealthscore(90);
-            e.setImageUrl("blub");
-
-            logger.info("Start firebase create entry");
-            firebaseService.createEntry(e);
-            logger.info("Finish firebase create entry");
-            return image.getId();
+            Long imageID = cleanfoodService.saveImage(file.getBytes());
+            List<EntityAnnotation> entityAnnotations = cleanfoodService.getGoogleLabelData(file.getBytes());
+            cleanfoodService.createFirebaseEntry(entityAnnotations);
+            return imageID;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -73,6 +58,11 @@ public class CleanfoodController {
         byte [] image = cleanFoodRepository.findOne(id).getImageData();
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
     }
+
+
+
+
+
 
 
 }
