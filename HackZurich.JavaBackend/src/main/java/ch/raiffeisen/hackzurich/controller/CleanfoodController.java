@@ -4,7 +4,6 @@ import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
 import ch.raiffeisen.hackzurich.dto.Entry;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodRepository;
 import ch.raiffeisen.hackzurich.repositories.PersonRepository;
-import ch.raiffeisen.hackzurich.service.CleanfoodService;
 import ch.raiffeisen.hackzurich.service.firebase.FirebaseService;
 import ch.raiffeisen.hackzurich.service.google.GoogleVisionClient;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
@@ -58,11 +57,6 @@ public class CleanfoodController {
         byte [] image = cleanFoodRepository.findOne(id).getImageData();
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
     }
-
-
-
-
-
 
 
 }
