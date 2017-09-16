@@ -34,7 +34,7 @@ public class Sports {
         angelnAnzahlFische = new BigDecimal(5);
         text = new ArrayList<>();
         text.add("Jogging in kilometers: "+joggenInKM);
-        text.add("Jogging in minutes: "+joggenInKM);
+        text.add("Jogging in minutes: "+joggenInMinuten);
         text.add("Swimming in kilometers: "+schwimmenInKM);
         text.add("Swimming in minutes: "+schwimmenInMinuten);
         text.add("Cycling in kilometers: "+radfahrenInKM);
