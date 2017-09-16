@@ -77,7 +77,7 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<environmentVariables>
-						<GOOGLE_APPLICATION_CREDENTIALS>${user.dir}/hackzurich-api.json</GOOGLE_APPLICATION_CREDENTIALS>
+						<GOOGLE_APPLICATION_CREDENTIALS>%HOME%/site/wwwroot/hackzurich-api.json</GOOGLE_APPLICATION_CREDENTIALS>
 					</environmentVariables>
 				</configuration>
 			</plugin>
