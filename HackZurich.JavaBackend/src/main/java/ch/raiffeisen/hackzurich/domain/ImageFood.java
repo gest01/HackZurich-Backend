@@ -30,7 +30,7 @@ public class ImageFood {
 
 
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "image_id", nullable = false, updatable = false)
     public CleanFoodImage getCleanFoodImage (){
         return cleanFoodImage;

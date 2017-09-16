@@ -1,11 +1,14 @@
 package ch.raiffeisen.hackzurich.controller;
 
+import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
+import ch.raiffeisen.hackzurich.domain.ImageFood;
+import ch.raiffeisen.hackzurich.dto.ImageDetail;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodImageRepository;
+import ch.raiffeisen.hackzurich.repositories.ImageFoodRepository;
 import ch.raiffeisen.hackzurich.service.CleanfoodService;
 import ch.raiffeisen.hackzurich.service.firebase.FirebaseService;
 import ch.raiffeisen.hackzurich.service.google.GoogleVisionClient;
 import ch.raiffeisen.hackzurich.utils.ThumbnailGenerator;
-import com.google.api.services.vision.v1.model.EntityAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -15,10 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,9 @@ public class CleanfoodController {
 
     @Resource
     private CleanFoodImageRepository cleanFoodRepository;
+
+    @Resource
+    private ImageFoodRepository imageFoodRepository;
 
     @Resource
     private CleanfoodService cleanfoodService;
@@ -73,5 +77,23 @@ public class CleanfoodController {
         cleanfoodService.analyze(imageId, entryId);
 
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body("Ok");
+    }
+
+    @RequestMapping(value="/details/{id}", method= RequestMethod.GET, produces="application/json")
+    public List<ImageDetail> getImageFoodDetails(@PathVariable("id") Long id) {
+        CleanFoodImage image = cleanFoodRepository.findOne(id);
+        Iterable<ImageFood> all = imageFoodRepository.findByCleanFoodImage(image);
+
+        return getImagesDetails(image, all);
+    }
+
+    private List<ImageDetail> getImagesDetails(CleanFoodImage image, Iterable<ImageFood> foods) {
+        List<ImageDetail> details = new ArrayList<>();
+        for (ImageFood food : foods) {
+            details.add(ImageDetail.from(image, food));
+        }
+        return details;
+
+
     }
 }
