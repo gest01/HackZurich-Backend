@@ -19,7 +19,7 @@ public class GoogleVisionClientTest {
     public void labelImage() throws Exception {
         GoogleVisionClient client = new GoogleVisionClient();
 
-        Path imagePath = Paths.get("C:/temp/hackzurich/tomate2.jpg");
+        Path imagePath = Paths.get("C:\\Users\\fabian\\Desktop\\foodTest.jpg");
         byte[] data = Files.readAllBytes(imagePath);
 
         List<EntityAnnotation> entityAnnotations = client.labelImage(data);

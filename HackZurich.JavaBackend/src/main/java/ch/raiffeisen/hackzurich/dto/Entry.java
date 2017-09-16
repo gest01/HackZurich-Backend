@@ -1,5 +1,7 @@
 package ch.raiffeisen.hackzurich.dto;
 
+import com.google.api.services.vision.v1.model.EntityAnnotation;
+
 /**
  * Representation of a Firebase entry.
  *
@@ -8,7 +10,7 @@ package ch.raiffeisen.hackzurich.dto;
 public class Entry {
     private String imageUrl;
     private Integer healthscore;
-    private Object google;
+    private EntityAnnotation google;
     private Object nutrition;
     private String user;
 
