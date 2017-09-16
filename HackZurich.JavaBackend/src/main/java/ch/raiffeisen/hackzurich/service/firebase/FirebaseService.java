@@ -26,8 +26,14 @@ public class FirebaseService {
         RestTemplate restTemplate = new RestTemplate();
         String json = restTemplate.getForObject("https://hackzurich2017.firebaseio.com/entries.json", String.class);
 
-        Gson gson = new Gson();
-        Map<String, Entry> entries = gson.fromJson(json, new TypeToken<Map<String, Entry>>(){}.getType());
+        Map<String, Entry> entries;
+
+        if("null".equals(json)) {
+            entries = new HashMap<>();
+        } else {
+            Gson gson = new Gson();
+            entries = gson.fromJson(json, new TypeToken<Map<String, Entry>>(){}.getType());
+        }
 
         return entries;
     }
