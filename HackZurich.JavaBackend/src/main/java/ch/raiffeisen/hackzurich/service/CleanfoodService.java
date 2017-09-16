@@ -4,8 +4,12 @@ import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
 import ch.raiffeisen.hackzurich.dto.FoodFacts;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodImageRepository;
 import ch.raiffeisen.hackzurich.service.fatsecret.FoodService;
+import ch.raiffeisen.hackzurich.service.fatsecret.HealthCalculator;
+import ch.raiffeisen.hackzurich.service.fatsecret.HealthInformation;
 import ch.raiffeisen.hackzurich.service.firebase.FirebaseService;
 import ch.raiffeisen.hackzurich.service.google.GoogleVisionClient;
+import com.fatsecret.platform.model.CompactFood;
+import com.fatsecret.platform.model.Food;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +36,9 @@ public class CleanfoodService {
     @Resource
     private FoodService foodService;
 
+    @Resource
+    private HealthCalculator healthCalculator;
+
 
     public Long saveImage(byte [] imagedata, byte [] thumbnaildata ) {
         logger.info("Uploading image with size:" +imagedata.length);
@@ -48,7 +55,17 @@ public class CleanfoodService {
     public void analyze(Long imageId, String entryId) throws IOException {
         CleanFoodImage cleanFoodImage = cleanFoodRepository.findOne(imageId);
         List<EntityAnnotation> googleLabelData = getGoogleLabelData(cleanFoodImage.getImageData());
-        createFirebaseEntry(entryId, googleLabelData);
+        HealthInformation healthInformation = null;
+        for (EntityAnnotation googleLabel : googleLabelData) {
+            List<CompactFood> foodFacts = foodService.getFoodFacts(googleLabel.getDescription());
+            if(foodFacts.size()>0) {
+                List<Food> foodDetails = foodService.getFoodDetails(foodFacts);
+                healthInformation = healthCalculator.calculateHealth(foodDetails);
+                break;
+            }
+        }
+
+        createFirebaseEntry(entryId, googleLabelData, healthInformation);
     }
 
     private List<EntityAnnotation> getGoogleLabelData(byte [] imagedata) throws IOException {
@@ -62,10 +79,11 @@ public class CleanfoodService {
 
     }
 
-    private void createFirebaseEntry(String entryId, List<EntityAnnotation> googleLabelData) {
+    private void createFirebaseEntry(String entryId, List<EntityAnnotation> googleLabelData, HealthInformation healthInformation) {
         FoodFacts foodFacts = new FoodFacts();
         foodFacts.setGoogle(googleLabelData);
-        foodFacts.setHealthscore(90);
+        foodFacts.setHealthscore(healthInformation.getHealthScore().intValue());
+        foodFacts.setHealthInformation(healthInformation);
         logger.info("Start firebase create entry");
         String key = entryId != null ? entryId : "";
         firebaseService.setFoodFacts(entryId, foodFacts);

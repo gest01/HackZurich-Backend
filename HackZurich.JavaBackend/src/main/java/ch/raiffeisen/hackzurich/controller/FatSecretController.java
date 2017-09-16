@@ -2,6 +2,7 @@ package ch.raiffeisen.hackzurich.controller;
 
 import ch.raiffeisen.hackzurich.service.fatsecret.FoodService;
 import ch.raiffeisen.hackzurich.service.fatsecret.HealthCalculator;
+import ch.raiffeisen.hackzurich.service.fatsecret.HealthInformation;
 import com.fatsecret.platform.model.CompactFood;
 import com.fatsecret.platform.model.Food;
 import org.springframework.http.MediaType;
@@ -29,8 +30,8 @@ public class FatSecretController {
     public List<Food> getFatSecret(@RequestParam("food") String food) {
         List<CompactFood> foodFacts = foodService.getFoodFacts(food);
         List<Food> foodDetails = foodService.getFoodDetails(foodFacts);
-        Long aLong = healthCalculator.calculateHealth(foodDetails);
-        System.out.println("HEALTH VALUE: "+aLong);
+        HealthInformation healthInformation = healthCalculator.calculateHealth(foodDetails);
+        System.out.println("HEALTH VALUE: "+healthInformation.getHealthScore());
         return foodDetails;
     }
 

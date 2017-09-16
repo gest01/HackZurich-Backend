@@ -15,7 +15,7 @@ public class HealthCalculator {
 
 
 
-    public Long calculateHealth(List<Food> foods) {
+    public HealthInformation calculateHealth(List<Food> foods) {
         BigDecimal fatSum = BigDecimal.ZERO;
         BigDecimal sugarSum = BigDecimal.ZERO;
         BigDecimal caloriesSum = BigDecimal.ZERO;
@@ -27,9 +27,9 @@ public class HealthCalculator {
             //Hier nur den ersten Treffer verwenden
             Serving serving = food.getServings().get(0);
             counter++;
-            fatSum = fatSum.add(serving.getFat());
-            sugarSum = sugarSum.add(serving.getSugar());
-            caloriesSum = caloriesSum.add(serving.getCalories());
+            fatSum = fatSum.add(serving.getFat()!=null ? serving.getFat() : BigDecimal.ONE);
+            sugarSum = sugarSum.add(serving.getSugar()!=null ? serving.getSugar() : BigDecimal.ONE);
+            caloriesSum = caloriesSum.add(serving.getCalories()!=null ? serving.getCalories() : BigDecimal.ONE);
             caloriesSum = calculateTo100G(caloriesSum, serving.getMetricServingAmount());
             sugarSum = calculateTo100G(sugarSum, serving.getMetricServingAmount());
             fatSum = calculateTo100G(fatSum, serving.getMetricServingAmount());
@@ -60,7 +60,8 @@ public class HealthCalculator {
         BigDecimal overall = divide(overallSum, new BigDecimal(3));
         BigDecimal overallWithFactor = overall.multiply(MAGIC_FACTOR);
         BigDecimal healthScore = new BigDecimal(100).subtract(overallWithFactor);
-        return healthScore.intValue() < 0 ? BigDecimal.ZERO.longValue() : healthScore.longValue();
+        healthScore =  healthScore.intValue() < 0 ? BigDecimal.ZERO : healthScore;
+        return new HealthInformation(sugarSum.longValue(), fatSum.longValue(), caloriesSum.longValue(), healthScore.longValue());
     }
 
 
