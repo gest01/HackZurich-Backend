@@ -8,6 +8,7 @@ import ch.raiffeisen.hackzurich.service.google.GoogleVisionClient;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -38,10 +39,11 @@ public class CleanfoodService {
         return image.getId();
     }
 
+    @Async
     public void analyze(Long imageId, String entryId) throws IOException {
         CleanFoodImage cleanFoodImage = cleanFoodRepository.findOne(imageId);
         List<EntityAnnotation> googleLabelData = getGoogleLabelData(cleanFoodImage.getImageData());
-
+        createFirebaseEntry("", googleLabelData);
     }
 
     private List<EntityAnnotation> getGoogleLabelData(byte [] imagedata) throws IOException {
