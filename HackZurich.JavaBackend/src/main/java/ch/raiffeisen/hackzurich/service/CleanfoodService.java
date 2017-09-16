@@ -10,9 +10,7 @@ import ch.raiffeisen.hackzurich.service.fatsecret.HealthCalculator;
 import ch.raiffeisen.hackzurich.service.fatsecret.HealthInformation;
 import ch.raiffeisen.hackzurich.service.firebase.FirebaseService;
 import ch.raiffeisen.hackzurich.service.google.GoogleVisionClient;
-import com.fatsecret.platform.model.CompactFood;
-import com.fatsecret.platform.model.Food;
-import com.fatsecret.platform.model.Serving;
+import com.fatsecret.platform.model.*;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +20,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -63,10 +62,13 @@ public class CleanfoodService {
         CleanFoodImage cleanFoodImage = cleanFoodRepository.findOne(imageId);
         List<EntityAnnotation> googleLabelData = getGoogleLabelData(cleanFoodImage.getImageData());
         HealthInformation healthInformation = null;
+        List<CompactRecipe> recipes = new ArrayList<>();
+        List<Food> foodDetailList = new ArrayList<>();
         for (EntityAnnotation googleLabel : googleLabelData) {
             List<CompactFood> foodFacts = foodService.getFoodFacts(googleLabel.getDescription());
             if(foodFacts.size()>0) {
                 List<Food> foodDetails = foodService.getFoodDetails(foodFacts);
+                foodDetailList.addAll(foodDetails);
                 healthInformation = healthCalculator.calculateHealth(foodDetails);
                 for (Food foodDetail : foodDetails) {
                     ImageFood imageFood = new ImageFood();
@@ -82,10 +84,14 @@ public class CleanfoodService {
                 }
                 break;
             }
-        }
+            List<CompactRecipe> recipesCompact = foodService.getRecipes(googleLabel.getDescription());
+            recipes.addAll(recipesCompact);
+            //recipeDetails.addAll(foodService.getRecipeDetails(recipesCompact));
 
-        createFirebaseEntry(entryId, googleLabelData, healthInformation);
+        }
+        createFirebaseEntry(entryId, googleLabelData, healthInformation, recipes, foodDetailList);
     }
+
 
     private List<EntityAnnotation> getGoogleLabelData(byte [] imagedata) throws IOException {
         String google_application_credentials = System.getenv("GOOGLE_APPLICATION_CREDENTIALS");
@@ -98,11 +104,13 @@ public class CleanfoodService {
 
     }
 
-    private void createFirebaseEntry(String entryId, List<EntityAnnotation> googleLabelData, HealthInformation healthInformation) {
+    private void createFirebaseEntry(String entryId, List<EntityAnnotation> googleLabelData, HealthInformation healthInformation, List<CompactRecipe> recipes, List<Food> foodDetailList) {
         FoodFacts foodFacts = new FoodFacts();
         foodFacts.setGoogle(googleLabelData);
         foodFacts.setHealthscore(healthInformation.getHealthScore().intValue());
         foodFacts.setHealthInformation(healthInformation);
+        foodFacts.setRecipes(recipes);
+        foodFacts.setFoodDetails(foodDetailList);
         logger.info("Start firebase create entry");
         String key = entryId != null ? entryId : "";
         firebaseService.setFoodFacts(entryId, foodFacts);
