@@ -1,17 +1,17 @@
 package ch.raiffeisen.hackzurich.domain;
 
+import org.dom4j.tree.AbstractEntity;
+
 import javax.persistence.*;
 
-/**
- * Created by simon on 15.09.2017.
- */
 @Entity
 public class CleanFoodImage {
 
-
-    private Long id;
     private byte[] imageData;
     private byte[] thumbnailData;
+
+
+    private Long id;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
