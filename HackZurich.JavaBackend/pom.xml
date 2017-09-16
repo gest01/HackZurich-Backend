@@ -72,15 +72,17 @@
 					<password>manuelle eingabe</password>
 				</configuration>
 			</plugin>
+			<!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<environmentVariables>
-						<GOOGLE_APPLICATION_CREDENTIALS>%HOME%/site/wwwroot/hackzurich-api.json</GOOGLE_APPLICATION_CREDENTIALS>
+						<GOOGLE_APPLICATION_CREDENTIALS>D:/home/site/wwwroot/hackzurich-api.json</GOOGLE_APPLICATION_CREDENTIALS>
 					</environmentVariables>
 				</configuration>
 			</plugin>
+			-->
 		</plugins>
 	</build>
 </project>
