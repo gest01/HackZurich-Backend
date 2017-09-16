@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class HackzurichApplicationTests {
 
 	@Autowired
@@ -19,7 +19,7 @@ public class HackzurichApplicationTests {
 	public void contextLoads() {
 	}
 
-	//@Test
+	@Test
 	public void createEntry() {
 		Entry entry = new Entry();
 		entry.setImageUrl("/blub.jpg");
