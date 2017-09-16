@@ -6,10 +6,7 @@ import com.fatsecret.platform.model.CompactFood;
 import com.fatsecret.platform.model.Food;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -28,8 +25,8 @@ public class FatSecretController {
     @Resource
     private HealthCalculator healthCalculator;
 
-    @RequestMapping(value="/searchFoods/{food}", method= RequestMethod.GET, produces="application/json")
-    public List<Food> getFatSecret(@PathVariable("food") String food) {
+    @RequestMapping(value="/searchFoods", method= RequestMethod.GET, produces="application/json")
+    public List<Food> getFatSecret(@RequestParam("food") String food) {
         List<CompactFood> foodFacts = foodService.getFoodFacts(food);
         List<Food> foodDetails = foodService.getFoodDetails(foodFacts);
         Long aLong = healthCalculator.calculateHealth(foodDetails);

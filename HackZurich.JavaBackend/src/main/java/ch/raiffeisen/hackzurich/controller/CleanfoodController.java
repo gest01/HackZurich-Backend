@@ -39,7 +39,7 @@ public class CleanfoodController {
     private FirebaseService firebaseService;
 
 
-    @PostMapping("/uploadAndAnalyze")
+    @PostMapping("/upload")
     public Long handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         try {
             byte[] thumb = ThumbnailGenerator.createThumb(file.getBytes(), 300, 300);

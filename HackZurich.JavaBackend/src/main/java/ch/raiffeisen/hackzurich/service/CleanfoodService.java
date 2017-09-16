@@ -48,7 +48,7 @@ public class CleanfoodService {
     public void analyze(Long imageId, String entryId) throws IOException {
         CleanFoodImage cleanFoodImage = cleanFoodRepository.findOne(imageId);
         List<EntityAnnotation> googleLabelData = getGoogleLabelData(cleanFoodImage.getImageData());
-        //createFirebaseEntry(entryId, googleLabelData);
+        createFirebaseEntry(entryId, googleLabelData);
     }
 
     private List<EntityAnnotation> getGoogleLabelData(byte [] imagedata) throws IOException {

@@ -30,6 +30,9 @@ public class HealthCalculator {
             fatSum = fatSum.add(serving.getFat());
             sugarSum = sugarSum.add(serving.getSugar());
             caloriesSum = caloriesSum.add(serving.getCalories());
+            caloriesSum = calculateTo100G(caloriesSum, serving.getMetricServingAmount());
+            sugarSum = calculateTo100G(sugarSum, serving.getMetricServingAmount());
+            fatSum = calculateTo100G(fatSum, serving.getMetricServingAmount());
             /*
             for (Serving serving : food.getServings()) {
                 counter++;
@@ -43,10 +46,14 @@ public class HealthCalculator {
         fatSum = divide(fatSum, new BigDecimal((counter)));
         sugarSum = divide(sugarSum, new BigDecimal((counter)));
         caloriesSum = divide(caloriesSum, new BigDecimal((counter)));
-        System.out.println(fatSum);
-        System.out.println(sugarSum);
-        System.out.println(caloriesSum);
         caloriesSum = getCaloriesIndicator(caloriesSum);
+
+
+
+        System.out.println("FAT: "+fatSum);
+        System.out.println("SUGAR:" +sugarSum);
+        System.out.println("CALROIES"+caloriesSum);
+
         System.out.println(caloriesSum);
 
         BigDecimal overallSum = fatSum.add(sugarSum).add(caloriesSum);
@@ -60,6 +67,11 @@ public class HealthCalculator {
     private BigDecimal divide(BigDecimal number, BigDecimal divider) {
         return number.divide(divider, 0, RoundingMode.HALF_UP);
 
+    }
+
+    private BigDecimal calculateTo100G(BigDecimal calories, BigDecimal metricServingUnit) {
+        BigDecimal factor = divide(new BigDecimal(100), metricServingUnit);
+        return calories.multiply(factor);
     }
 
 
