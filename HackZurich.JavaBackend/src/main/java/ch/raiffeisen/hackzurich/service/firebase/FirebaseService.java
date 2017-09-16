@@ -38,8 +38,8 @@ public class FirebaseService {
         return entries;
     }
 
-    public void setFoodFacts(String entryKey, FoodFacts foodFacts) {
+    public void setFoodFacts(String entryId, FoodFacts foodFacts) {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.put("https://hackzurich2017.firebaseio.com/entries/" + entryKey + "/foodFacts.json", foodFacts, FoodFacts.class);
+        restTemplate.put("https://hackzurich2017.firebaseio.com/entries/" + entryId + "/foodFacts.json", foodFacts, FoodFacts.class);
     }
 }

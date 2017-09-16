@@ -43,7 +43,7 @@ public class CleanfoodService {
     public void analyze(Long imageId, String entryId) throws IOException {
         CleanFoodImage cleanFoodImage = cleanFoodRepository.findOne(imageId);
         List<EntityAnnotation> googleLabelData = getGoogleLabelData(cleanFoodImage.getImageData());
-        createFirebaseEntry("", googleLabelData);
+        createFirebaseEntry(entryId, googleLabelData);
     }
 
     private List<EntityAnnotation> getGoogleLabelData(byte [] imagedata) throws IOException {
@@ -57,13 +57,13 @@ public class CleanfoodService {
 
     }
 
-    private void createFirebaseEntry(String entryKey, List<EntityAnnotation> googleLabelData) {
+    private void createFirebaseEntry(String entryId, List<EntityAnnotation> googleLabelData) {
         FoodFacts foodFacts = new FoodFacts();
         foodFacts.setGoogle(googleLabelData);
         foodFacts.setHealthscore(90);
         logger.info("Start firebase create entry");
-        String key = entryKey != null ? entryKey : "";
-        firebaseService.setFoodFacts("", foodFacts);
+        String key = entryId != null ? entryId : "";
+        firebaseService.setFoodFacts(entryId, foodFacts);
         logger.info("Finish firebase create entry");
     }
 

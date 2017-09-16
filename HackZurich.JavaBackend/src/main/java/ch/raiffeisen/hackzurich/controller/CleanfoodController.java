@@ -40,10 +40,6 @@ public class CleanfoodController {
         try {
             Long imageID = cleanfoodService.saveImage(file.getBytes());
 
-            cleanfoodService.analyze(imageID, null);
-
-            //List<EntityAnnotation> entityAnnotations = cleanfoodService.getGoogleLabelData(file.getBytes());
-            //cleanfoodService.createFirebaseEntry(entityAnnotations);
             return imageID;
         } catch (IOException e) {
             e.printStackTrace();
@@ -57,5 +53,12 @@ public class CleanfoodController {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
     }
 
+    @RequestMapping(value="/{entryId}/{imageId}", method= RequestMethod.GET, produces="text/plain")
+    public ResponseEntity<String> processImage(@PathVariable(value="entryId") String entryId,
+                                          @PathVariable(value="imageId") Long imageId) throws Exception {
 
+        cleanfoodService.analyze(imageId, entryId);
+
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body("Ok");
+    }
 }
