@@ -53,7 +53,7 @@ public class CleanfoodController {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
     }
 
-    @RequestMapping(value="/processImage/{entryId}/{imageId}", method= RequestMethod.GET, produces="text/plain")
+    @RequestMapping(value="/processImage/{entryId}/{imageId}", method= RequestMethod.POST, produces="text/plain")
     public ResponseEntity<String> processImage(@PathVariable(value="entryId") String entryId,
                                           @PathVariable(value="imageId") Long imageId) throws Exception {
 
