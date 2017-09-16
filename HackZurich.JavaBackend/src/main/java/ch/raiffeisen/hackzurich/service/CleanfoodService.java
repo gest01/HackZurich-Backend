@@ -3,6 +3,7 @@ package ch.raiffeisen.hackzurich.service;
 import ch.raiffeisen.hackzurich.controller.CleanfoodController;
 import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
 import ch.raiffeisen.hackzurich.dto.Entry;
+import ch.raiffeisen.hackzurich.dto.FoodFacts;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodRepository;
 import ch.raiffeisen.hackzurich.service.firebase.FirebaseService;
 import ch.raiffeisen.hackzurich.service.google.GoogleVisionClient;
@@ -52,12 +53,12 @@ public class CleanfoodService {
     }
 
     public void createFirebaseEntry(List<EntityAnnotation> googleLabelData) {
-        Entry e = new Entry();
-        e.setGoogle(googleLabelData);
-        e.setHealthscore(90);
-        e.setImageUrl("blub");
+        FoodFacts foodFacts = new FoodFacts();
+        foodFacts.setGoogle(googleLabelData);
+        foodFacts.setHealthscore(90);
+
         logger.info("Start firebase create entry");
-        firebaseService.createEntry(e);
+        firebaseService.setFoodFacts("", foodFacts);
         logger.info("Finish firebase create entry");
     }
 
