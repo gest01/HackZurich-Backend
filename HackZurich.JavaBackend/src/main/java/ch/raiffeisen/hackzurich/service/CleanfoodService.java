@@ -3,6 +3,7 @@ package ch.raiffeisen.hackzurich.service;
 import ch.raiffeisen.hackzurich.domain.CleanFoodImage;
 import ch.raiffeisen.hackzurich.domain.ImageFood;
 import ch.raiffeisen.hackzurich.dto.FoodFacts;
+import ch.raiffeisen.hackzurich.dto.NutritionFacts;
 import ch.raiffeisen.hackzurich.dto.Sports;
 import ch.raiffeisen.hackzurich.repositories.CleanFoodImageRepository;
 import ch.raiffeisen.hackzurich.repositories.ImageFoodRepository;
@@ -111,6 +112,11 @@ public class CleanfoodService {
         foodFacts.setRecipes(recipes);
         foodFacts.setFoodDetails(foodDetailList);
         foodFacts.setSports(new Sports(healthInformation.getCalories()));
+        try {
+            foodFacts.setNutritionFacts(new NutritionFacts(foodDetailList.get(0).getServings().get(0)));
+        } catch(Throwable t) {
+
+        }
         logger.info("Start firebase create entry");
         String key = entryId != null ? entryId : "";
         firebaseService.setFoodFacts(entryId, foodFacts);
