@@ -14,8 +14,8 @@ import java.util.List;
 @Component
 public class FoodService {
 
-    private static final String API_KEY = "b3422a1cd0824284942a6c2dde064c97";
-    private static final String API_REST_SECRET = "26e7d65017924a72987cf7c0a4b08af8";
+    private static final String API_KEY = "************************";
+    private static final String API_REST_SECRET = "************************";
     private static final int MAX_SEARCH_DETAIL = 2;
     private static final String FOOD_TYPE = "Generic";
     private FatsecretService fatsecretService;
