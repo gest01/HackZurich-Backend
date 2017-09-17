@@ -22,15 +22,15 @@ public class Sports {
     public Sports(Long cal) {
         BigDecimal calories = new BigDecimal(cal);
         calories =  calories.multiply(new BigDecimal(8));
-        if(calories.compareTo(new BigDecimal(100))>0) {
+        if(calories.compareTo(new BigDecimal(100))<0) {
             calories = new BigDecimal(300);
         }
         joggenInKM = divide(calories, new BigDecimal(150), 2);
         joggenInMinuten = divide(calories, new BigDecimal(25), 0);
         schwimmenInKM = divide(calories, new BigDecimal(120), 2);
-        schwimmenInMinuten = divide(calories, new BigDecimal(20), 0);
+        schwimmenInMinuten = divide(calories, new BigDecimal(9), 0);
         radfahrenInKM  = divide(calories, new BigDecimal(15), 2);
-        radfahrenInMinuten  = divide(calories, new BigDecimal(6), 0);
+        radfahrenInMinuten  = divide(calories, new BigDecimal(10), 0);
         angelnInMinuten = divide(calories, new BigDecimal(1), 0);
         angelnAnzahlFische = new BigDecimal(5);
         text = new ArrayList<>();
