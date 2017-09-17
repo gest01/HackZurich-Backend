@@ -21,7 +21,7 @@ public class Sports {
 
     public Sports(Long cal) {
         BigDecimal calories = new BigDecimal(cal);
-        calories =  calories.multiply(new BigDecimal(3));
+        calories =  calories.multiply(new BigDecimal(8));
         if(calories.compareTo(new BigDecimal(100))<0) {
             calories = new BigDecimal(300);
         }
