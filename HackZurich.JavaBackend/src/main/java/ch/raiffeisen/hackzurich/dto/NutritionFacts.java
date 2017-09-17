@@ -19,7 +19,7 @@ public class NutritionFacts {
         addText("  TransFat", serving.getTransFat());
         addText("  MonounsaturatedFat", serving.getMonounsaturatedFat());
         addText("  PolyunsaturatedFat", serving.getPolyunsaturatedFat());
-        addText("Calories:", serving.getCalories());
+        addText("Calories", serving.getCalories());
         addText("Sugar", serving.getSugar());
         addText("Calcium", serving.getCalcium());
         addText("Carhobydrate", serving.getCarbohydrate());
